@@ -1,0 +1,6 @@
+{
+  "name": "8C Universe — Official Website",
+  "description": "Website resmi kelas 8C-SADOEL — Jadwal Pelajaran, Jadwal Piket, Peraturan Kelas, dan Instagram.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

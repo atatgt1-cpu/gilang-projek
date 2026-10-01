@@ -1,0 +1,617 @@
+/* ==========================================================
+   8C UNIVERSE — SISTEM MUSIK & DAFTAR LAGU
+   Tema: Cyber-Dark / Futuristic Neon (Navy, Cyan, Violet)
+   ========================================================== */
+
+/* 1. TOMBOL PINTAS NAVBAR (UKURAN & TINGGI PERSIS SAMA DENGAN .mini-clock) */
+.nav-music-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.65rem;
+  color: var(--ink-1);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--stroke);
+  padding: 4px 8px;
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, transform 0.2s ease;
+  white-space: nowrap;
+  box-sizing: border-box;
+  height: 33px; /* Sama persis dengan tinggi render .mini-clock */
+}
+.nav-music-btn .btn-sub-label {
+  font-size: 0.55rem;
+  color: var(--ink-2);
+  line-height: 1;
+}
+.nav-music-btn .btn-main-label {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.75rem;
+  color: var(--cyan);
+  line-height: 1.15;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.nav-music-btn svg {
+  width: 10px;
+  height: 10px;
+  color: var(--cyan);
+  flex-shrink: 0;
+}
+@media (hover: hover) and (pointer: fine) {
+  .nav-music-btn:hover {
+    border-color: rgba(56, 224, 216, 0.4);
+    box-shadow: 0 0 12px rgba(56, 224, 216, 0.2);
+    background: rgba(56, 224, 216, 0.1);
+  }
+}
+.nav-music-btn:active {
+  transform: scale(0.95);
+}
+
+/* 2. DAFTAR LAGU LAYOUT & SEARCH */
+.daftarlagu-header {
+  padding-top: 105px;
+  padding-bottom: 24px;
+  text-align: center;
+}
+.daftarlagu-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.daftarlagu-sub {
+  color: var(--ink-2);
+  font-size: 0.9rem;
+  max-width: 52ch;
+  margin: 0 auto 28px;
+}
+
+.song-search-container {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto 26px;
+}
+.song-search-input {
+  width: 100%;
+  background: rgba(8, 10, 32, 0.85);
+  border: 1px solid var(--stroke);
+  border-radius: 100px;
+  color: #fff;
+  padding: 12px 18px 12px 42px;
+  font-size: 0.88rem;
+  outline: none;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+.song-search-input:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 18px rgba(56, 224, 216, 0.25);
+  background: rgba(12, 16, 44, 0.95);
+}
+.song-search-input::placeholder {
+  color: var(--ink-3);
+  font-size: 0.82rem;
+}
+.song-search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  color: var(--cyan);
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+/* GRID DAFTAR LAGU */
+.songs-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+@media (min-width: 600px) {
+  .songs-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 960px) {
+  .songs-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.song-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid var(--stroke-soft);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: transform 0.25s var(--ease), border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+  overflow: hidden;
+  user-select: none;
+}
+.song-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: transparent;
+  transition: background 0.25s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .song-card:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(124, 92, 255, 0.4);
+    box-shadow: 0 10px 24px -8px rgba(124, 92, 255, 0.25);
+  }
+}
+
+/* KARTU AKTIF / HIGHLIGHT NEON */
+.song-card.is-active {
+  background: linear-gradient(135deg, rgba(124, 92, 255, 0.18), rgba(56, 224, 216, 0.12));
+  border-color: var(--cyan);
+  box-shadow: 0 0 20px rgba(56, 224, 216, 0.28), inset 0 0 12px rgba(56, 224, 216, 0.08);
+}
+.song-card.is-active::before {
+  background: linear-gradient(180deg, var(--cyan), var(--violet));
+}
+
+.song-card-cover-wrap {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #06081e;
+  border: 1px solid var(--stroke-soft);
+}
+.song-card-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s var(--ease);
+}
+.song-card.is-active .song-card-cover {
+  transform: scale(1.08);
+}
+
+.song-card-meta {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.song-card-title {
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.88rem;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.song-card.is-active .song-card-title {
+  color: var(--cyan);
+}
+.song-card-artist {
+  color: var(--ink-1);
+  font-size: 0.72rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.song-card-album {
+  color: var(--violet-2);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.song-card-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--stroke);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s var(--ease);
+}
+.song-card:hover .song-card-btn {
+  background: rgba(56, 224, 216, 0.2);
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+.song-card.is-active .song-card-btn {
+  background: linear-gradient(135deg, var(--cyan), var(--violet));
+  border-color: transparent;
+  color: #040310;
+  box-shadow: 0 0 14px rgba(56, 224, 216, 0.5);
+}
+.song-card-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+.song-card-btn:active {
+  transform: scale(0.9);
+}
+
+.song-empty-msg {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 36px 18px;
+  color: var(--ink-2);
+  font-size: 0.85rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px dashed var(--stroke);
+  border-radius: var(--radius-md);
+}
+
+/* ==========================================================
+   3. FLOATING MUSIC PLAYER (#musicBox) — BOTTOM LEFT AUTO-HIDE
+   ========================================================== */
+.music-floating-wrap {
+  position: fixed;
+  bottom: calc(18px + env(safe-area-inset-bottom));
+  left: 18px;
+  z-index: 1000;
+  pointer-events: none;
+  max-width: calc(100vw - 86px);
+  transform: translateY(140%) scale(0.94);
+  opacity: 0;
+  transition: transform 0.45s cubic-bezier(.19, 1, .22, 1), opacity 0.4s cubic-bezier(.19, 1, .22, 1);
+  will-change: transform, opacity;
+}
+
+@media (min-width: 768px) {
+  .music-floating-wrap {
+    left: 24px;
+    bottom: calc(22px + env(safe-area-inset-bottom));
+    max-width: 370px;
+  }
+}
+
+.music-floating-wrap.show-player {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* TOMBOL TRIGGER MINI (UNTUK MEMUNCULKAN KEMBALI KAPAN SAJA) */
+.music-toggle-pill {
+  position: fixed;
+  bottom: calc(18px + env(safe-area-inset-bottom));
+  left: 18px;
+  z-index: 990;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(9, 11, 30, 0.88);
+  border: 1px solid rgba(56, 224, 216, 0.35);
+  color: var(--cyan);
+  padding: 8px 12px;
+  border-radius: 100px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+  transition: transform 0.25s ease, opacity 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  user-select: none;
+}
+.music-toggle-pill:hover {
+  border-color: var(--cyan);
+  box-shadow: 0 0 14px rgba(56, 224, 216, 0.4);
+  transform: translateY(-2px);
+  color: #fff;
+}
+.music-toggle-pill.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(16px);
+}
+.music-toggle-pill svg {
+  width: 14px;
+  height: 14px;
+}
+.music-toggle-pill .pulse-wave {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 8px var(--cyan);
+}
+
+.floating-music-box {
+  position: relative;
+  width: 320px;
+  max-width: 100%;
+  background: rgba(9, 11, 30, 0.95);
+  border: 1px solid rgba(56, 224, 216, 0.35);
+  border-radius: 18px;
+  padding: 10px 14px;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.75), 0 0 25px rgba(56, 224, 216, 0.18);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+@media (max-width: 480px) {
+  .floating-music-box {
+    width: 290px;
+    padding: 8px 12px;
+  }
+}
+
+.floating-music-box.is-playing {
+  border-color: rgba(56, 224, 216, 0.6);
+  box-shadow: 0 16px 42px rgba(0, 0, 0, 0.8), 0 0 28px rgba(56, 224, 216, 0.28);
+}
+
+/* Header player: Cover + Title/Artist + Actions + Tombol Close */
+.fmb-main-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.fmb-cover-box {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #06081e;
+  border: 1px solid var(--stroke);
+}
+.fmb-cover-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: fmb-spin 7s linear infinite;
+  animation-play-state: paused;
+}
+.floating-music-box.is-playing .fmb-cover-box img {
+  animation-play-state: running;
+}
+@keyframes fmb-spin {
+  to { transform: rotate(360deg); }
+}
+
+.fmb-info {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+.fmb-title {
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.84rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.25;
+}
+.fmb-artist-album {
+  color: var(--cyan);
+  font-size: 0.68rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fmb-status-tip {
+  font-size: 0.6rem;
+  color: var(--ink-3);
+  margin-top: 1px;
+}
+.fmb-status-tip.error {
+  color: #ff6b8b;
+}
+
+.fmb-actions {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+}
+.fmb-ctrl-btn {
+  background: transparent;
+  border: none;
+  color: var(--ink-1);
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.fmb-ctrl-btn:hover {
+  color: var(--cyan);
+  background: rgba(255, 255, 255, 0.08);
+}
+.fmb-ctrl-btn:active {
+  transform: scale(0.9);
+}
+.fmb-ctrl-btn svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+}
+
+.fmb-play-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--cyan), var(--violet));
+  border: none;
+  color: #040310;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(56, 224, 216, 0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.fmb-play-btn:active {
+  transform: scale(0.9);
+}
+.fmb-play-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+.floating-music-box:not(.is-playing) .fmb-play-btn svg:first-child {
+  margin-left: 2px;
+}
+
+/* TOMBOL CLOSE DI PLAYER */
+.fmb-close-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--ink-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-left: 2px;
+  flex-shrink: 0;
+}
+.fmb-close-btn:hover {
+  background: rgba(255, 107, 139, 0.25);
+  border-color: #ff6b8b;
+  color: #ff6b8b;
+  transform: scale(1.08);
+}
+.fmb-close-btn:active {
+  transform: scale(0.9);
+}
+.fmb-close-btn svg {
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
+}
+
+.fmb-progress-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+.fmb-bar-wrap {
+  flex: 1;
+  position: relative;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  cursor: pointer;
+  overflow: hidden;
+}
+.fmb-bar-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--cyan), var(--violet));
+  border-radius: 8px;
+  transition: width 0.1s linear;
+}
+.fmb-time-text {
+  font-size: 0.62rem;
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+  min-width: 58px;
+  text-align: right;
+}
+
+.fmb-volume-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-top: 3px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.08);
+}
+.fmb-vol-icon {
+  width: 14px;
+  height: 14px;
+  color: var(--cyan);
+  flex-shrink: 0;
+}
+.fmb-vol-slider {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+}
+.fmb-vol-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 6px var(--cyan);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+.fmb-vol-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.25);
+}
+.fmb-vol-slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--cyan);
+  border: none;
+  box-shadow: 0 0 6px var(--cyan);
+  cursor: pointer;
+}
