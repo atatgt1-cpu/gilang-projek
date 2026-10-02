@@ -58,15 +58,21 @@
     '</svg>'
   );
 
-  // Relative Path Resolver Aman menggunakan document.baseURI
+  // Relative Path Resolver Aman menggunakan document.baseURI dan window.location.origin
   function getSafeUrl(relativePath) {
     if (!relativePath) return "";
     if (relativePath.startsWith("data:") || relativePath.startsWith("blob:") || relativePath.startsWith("http://") || relativePath.startsWith("https://")) {
       return relativePath;
     }
     try {
+      const clean = relativePath.replace(/\\/g, "/");
+      const normalized = clean.startsWith("/") ? clean : "/" + clean;
+      const origin = window.location.origin;
+      if (origin && origin !== "null" && !origin.startsWith("file:")) {
+        return origin + normalized;
+      }
       const base = document.baseURI || window.location.href;
-      return new URL(relativePath.replace(/\\/g, "/"), base).href;
+      return new URL(normalized, base).href;
     } catch (e) {
       return relativePath.replace(/\\/g, "/");
     }
@@ -513,8 +519,12 @@
   // Expose ke global namespace
   window.MusicPlayer = MusicPlayer;
 
-  // Inisialisasi otomatis setelah DOM selesai
-  document.addEventListener("DOMContentLoaded", function () {
+  // Inisialisasi otomatis setelah DOM selesai (kompatibel dengan ES module & static script)
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", function () {
+      MusicPlayer.init();
+    });
+  } else {
     MusicPlayer.init();
-  });
+  }
 })();
